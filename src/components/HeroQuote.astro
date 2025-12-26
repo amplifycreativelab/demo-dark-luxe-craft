@@ -6,6 +6,9 @@ interface Props {
     secondaryCta?: string;
 }
 
+import { Image } from "astro:assets";
+import heroBgImg from "../assets/images/hero_image_desktop.webp";
+
 const {
     headline = "Fast & Reliable Plumbing in Perth",
     subheadline = "Licensed • Insured • Arrives on Time",
@@ -68,14 +71,13 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
         </div>
     </div>
 
-    <!-- Right side image (Desktop absolute) -->
     <div
         class="hidden md:block absolute top-0 right-0 w-1/2 h-full bg-gray-200"
     >
-        <!-- Placeholder for hero image -->
-        <div
-            class="w-full h-full bg-cover bg-center bg-[url('https://images.unsplash.com/photo-1581092921461-eab62e97a783?q=80&w=2670&auto=format&fit=crop')] mix-blend-multiply opacity-90"
-        >
-        </div>
+        <Image
+            src={heroBgImg}
+            alt="Industrial plumbing pipes"
+            class="w-full h-full object-cover mix-blend-multiply opacity-90"
+        />
     </div>
 </section>
