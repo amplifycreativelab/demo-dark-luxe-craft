@@ -1,0 +1,106 @@
+---
+
+---
+
+<form class="max-w-xl mx-auto space-y-12" id="booking-form">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="space-y-2">
+            <label
+                for="name"
+                class="text-xs uppercase tracking-widest text-warm-grey"
+                >Full Name</label
+            >
+            <input
+                type="text"
+                id="name"
+                name="name"
+                required
+                class="w-full bg-transparent border-b border-divider py-4 focus:border-metallic-accent outline-none transition-colors duration-500 font-body text-ink-text"
+                placeholder="John Doe"
+            />
+        </div>
+        <div class="space-y-2">
+            <label
+                for="email"
+                class="text-xs uppercase tracking-widest text-warm-grey"
+                >Email Address</label
+            >
+            <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                class="w-full bg-transparent border-b border-divider py-4 focus:border-metallic-accent outline-none transition-colors duration-500 font-body text-ink-text"
+                placeholder="john@example.com"
+            />
+        </div>
+    </div>
+
+    <div class="space-y-2">
+        <label
+            for="artist"
+            class="text-xs uppercase tracking-widest text-warm-grey"
+            >Preferred Artist</label
+        >
+        <select
+            id="artist"
+            name="artist"
+            class="w-full bg-transparent border-b border-divider py-4 focus:border-metallic-accent outline-none transition-colors duration-500 font-body text-ink-text appearance-none"
+        >
+            <option value="any" class="bg-charcoal">Any Available Artist</option
+            >
+            <option value="elias-vance" class="bg-charcoal">Elias Vance</option>
+            <option value="sara-kae" class="bg-charcoal">Sara Kae</option>
+            <option value="julian-noir" class="bg-charcoal">Julian Noir</option>
+        </select>
+    </div>
+
+    <div class="space-y-2">
+        <label
+            for="message"
+            class="text-xs uppercase tracking-widest text-warm-grey"
+            >Project Description</label
+        >
+        <textarea
+            id="message"
+            name="message"
+            rows="4"
+            required
+            class="w-full bg-transparent border-b border-divider py-4 focus:border-metallic-accent outline-none transition-colors duration-500 font-body text-ink-text resize-none"
+            placeholder="Describe your vision, placement, and size..."
+        ></textarea>
+    </div>
+
+    <button
+        type="submit"
+        class="w-full md:w-auto px-12 py-5 bg-metallic-accent text-charcoal font-body text-xs uppercase tracking-[0.3em] hover:bg-ink-text transition-colors duration-500"
+    >
+        Request Consultation
+    </button>
+
+    <div
+        id="form-success"
+        class="hidden text-center py-12 space-y-4 border border-metallic-accent/20 bg-surface"
+    >
+        <h3 class="text-2xl font-heading text-metallic-accent">
+            Ritual Received
+        </h3>
+        <p class="text-warm-grey text-sm">
+            We will contact you shortly to discuss your journey.
+        </p>
+    </div>
+</form>
+
+<script>
+    const form = document.getElementById("booking-form") as HTMLFormElement;
+    const success = document.getElementById("form-success");
+
+    if (form && success) {
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+            form.style.display = "none";
+            success.classList.remove("hidden");
+            success.scrollIntoView({ behavior: "smooth", block: "center" });
+        });
+    }
+</script>

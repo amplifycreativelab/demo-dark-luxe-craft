@@ -1,0 +1,90 @@
+---
+import { Image } from "astro:assets";
+import { portfolio } from "../data/portfolio";
+import { artists } from "../data/artists";
+
+interface Props {
+    limit?: number;
+    artistId?: string;
+}
+
+const { limit, artistId } = Astro.props;
+
+let items = artistId
+    ? portfolio.filter((item) => item.artistId === artistId)
+    : portfolio;
+
+if (limit) {
+    items = items.slice(0, limit);
+}
+---
+
+<div
+    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
+    id="gallery-grid"
+>
+    {
+        items.map((item) => {
+            const artist = artists.find((a) => a.id === item.artistId);
+            return (
+                <article class="group relative aspect-[3/4] overflow-hidden bg-surface cursor-pointer focus-within:ring-2 focus-within:ring-metallic-accent outline-none">
+                    <Image
+                        src={item.image}
+                        alt={item.title}
+                        class="w-full h-full object-cover grayscale opacity-90 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-1000 ease-out"
+                        loading="lazy"
+                    />
+                    <div class="absolute inset-0 bg-charcoal/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
+                        <p class="text-[10px] tracking-[0.2em] uppercase text-metallic-accent mb-1">
+                            {artist?.name}
+                        </p>
+                        <h3 class="text-lg font-heading tracking-wide text-ink-text">
+                            {item.title}
+                        </h3>
+                    </div>
+                    <button
+                        class="absolute inset-0 w-full h-full opacity-0 z-10"
+                        aria-label={`View ${item.title} by ${artist?.name}`}
+                    />
+                </article>
+            );
+        })
+    }
+</div>
+
+<style>
+    /* Subtle vignette following cursor (Desktop only) */
+    @media (min-width: 768px) {
+        #gallery-grid article::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(
+                600px circle at var(--x) var(--y),
+                rgba(200, 164, 107, 0.05),
+                transparent 40%
+            );
+            opacity: 0;
+            transition: opacity 0.5s;
+            pointer-events: none;
+        }
+
+        #gallery-grid article:hover::after {
+            opacity: 1;
+        }
+    }
+</style>
+
+<script>
+    const articles = document.querySelectorAll("#gallery-grid article");
+
+    articles.forEach((article) => {
+        article.addEventListener("mousemove", (e: any) => {
+            const rect = article.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            (article as HTMLElement).style.setProperty("--x", `${x}px`);
+            (article as HTMLElement).style.setProperty("--y", `${y}px`);
+        });
+    });
+</script>

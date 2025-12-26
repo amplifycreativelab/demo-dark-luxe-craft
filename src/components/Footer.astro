@@ -1,0 +1,93 @@
+---
+const base = import.meta.env.BASE_URL;
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="mt-32 pb-12 px-6 md:px-12 border-t border-divider">
+    <div
+        class="max-w-[1280px] mx-auto pt-24 grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-24"
+    >
+        <div>
+            <h2 class="text-xl font-heading tracking-widest uppercase mb-8">
+                INK//RITUAL
+            </h2>
+            <p class="text-warm-grey text-sm leading-relaxed max-w-xs">
+                A premium tattoo atelier focused on line, form, and longevity.
+                By appointment only.
+            </p>
+        </div>
+
+        <div>
+            <h3
+                class="text-xs font-body tracking-[0.3em] uppercase text-metallic-accent mb-8"
+            >
+                Location
+            </h3>
+            <address class="not-italic text-warm-grey text-sm leading-relaxed">
+                123 Boutique Lane<br />
+                Northbridge, Perth<br />
+                WA 6003, Australia
+            </address>
+            <div class="mt-4 flex flex-col space-y-2">
+                <a
+                    href="tel:+61890000000"
+                    class="text-sm text-warm-grey hover:text-ink-text transition-colors"
+                    >+61 8 9000 0000</a
+                >
+                <a
+                    href="mailto:contact@inkritual.com.au"
+                    class="text-sm text-warm-grey hover:text-ink-text transition-colors"
+                    >contact@inkritual.com.au</a
+                >
+            </div>
+        </div>
+
+        <div>
+            <h3
+                class="text-xs font-body tracking-[0.3em] uppercase text-metallic-accent mb-8"
+            >
+                Follow
+            </h3>
+            <ul class="space-y-4">
+                <li>
+                    <a
+                        href="#"
+                        class="text-sm text-warm-grey hover:text-ink-text transition-colors"
+                        >Instagram</a>
+                </li>
+                <li>
+                    <a
+                        href="#"
+                        class="text-sm text-warm-grey hover:text-ink-text transition-colors"
+                        >Journal</a>
+                </li>
+                <li>
+                    <a
+                        href="#"
+                        class="text-sm text-warm-grey hover:text-ink-text transition-colors"
+                        >Process</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div
+        class="max-w-[1280px] mx-auto mt-24 pt-8 border-t border-divider flex flex-col md:flex-row justify-between items-center opacity-50"
+    >
+        <p class="text-[10px] tracking-widest uppercase">
+            &copy; {currentYear} INK//RITUAL. All Rights Reserved.
+        </p>
+        <div class="flex space-x-8 mt-4 md:mt-0">
+            <a
+                href={`${base}privacy`}
+                class="text-[10px] tracking-widest uppercase hover:text-ink-text"
+                >Privacy</a
+            >
+            <a
+                href="#"
+                class="text-[10px] tracking-widest uppercase hover:text-ink-text"
+                >Terms</a
+            >
+        </div>
+    </div>
+</footer>

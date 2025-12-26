@@ -1,122 +1,108 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
-
-const title = "Get a Quote";
+import MainLayout from "../../layouts/MainLayout.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import InkHeading from "../../components/InkHeading.astro";
+import BookingForm from "../../components/BookingForm.astro";
 ---
 
-<BaseLayout title={title}>
-    <div class="bg-primary py-16 text-white">
-        <div class="container mx-auto px-4 text-center">
-            <h1 class="text-4xl md:text-5xl font-bold mb-6">Contact Us</h1>
-            <p class="text-xl text-blue-100 max-w-2xl mx-auto">
-                Fill out the form below for a free quote, or call us directly
-                for emergency service.
-            </p>
-        </div>
-    </div>
+<MainLayout title="Contact">
+    <Header slot="header" />
 
-    <div class="container mx-auto px-4 py-16">
-        <div
-            class="max-w-2xl mx-auto bg-white p-8 rounded-2xl shadow-lg border border-gray-100"
-        >
-            <h2 class="text-2xl font-bold mb-6 text-gray-900">
-                Request a Free Quote
-            </h2>
-            <form class="space-y-6">
-                <div class="grid md:grid-cols-2 gap-6">
-                    <div>
-                        <label
-                            for="name"
-                            class="block text-sm font-medium text-gray-700 mb-1"
-                            >Full Name</label
-                        >
-                        <input
-                            type="text"
-                            id="name"
-                            name="name"
-                            class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
-                            placeholder="John Doe"
-                            required
-                        />
-                    </div>
-                    <div>
-                        <label
-                            for="phone"
-                            class="block text-sm font-medium text-gray-700 mb-1"
-                            >Phone Number <span class="text-red-500">*</span
-                            ></label
-                        >
-                        <input
-                            type="tel"
-                            id="phone"
-                            name="phone"
-                            class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
-                            placeholder="0400 000 000"
-                            required
-                        />
-                    </div>
-                </div>
-
-                <div>
-                    <label
-                        for="service"
-                        class="block text-sm font-medium text-gray-700 mb-1"
-                        >Service Needed</label
-                    >
-                    <select
-                        id="service"
-                        name="service"
-                        class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
-                    >
-                        <option value="">Select a service...</option>
-                        <option value="emergency">Emergency Plumbing</option>
-                        <option value="drains">Blocked Drains</option>
-                        <option value="hotwater">Hot Water System</option>
-                        <option value="other">Other Inquiry</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label
-                        for="suburb"
-                        class="block text-sm font-medium text-gray-700 mb-1"
-                        >Suburb</label
-                    >
-                    <input
-                        type="text"
-                        id="suburb"
-                        name="suburb"
-                        class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
-                        placeholder="e.g. Subiaco"
-                    />
-                </div>
-
-                <div>
-                    <label
-                        for="message"
-                        class="block text-sm font-medium text-gray-700 mb-1"
-                        >Details</label
-                    >
-                    <textarea
-                        id="message"
-                        name="message"
-                        rows="4"
-                        class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
-                        placeholder="Describe your plumbing issue..."
-                    ></textarea>
-                </div>
-
-                <button
-                    type="submit"
-                    class="w-full bg-primary text-white font-bold text-lg py-4 rounded-xl hover:bg-primary-hover transition-colors shadow-lg"
+    <section class="pt-24 pb-32 px-6 md:px-12 max-w-[1280px] mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-24">
+            <div>
+                <p
+                    class="text-[10px] tracking-[0.5em] uppercase text-metallic-accent mb-8"
                 >
-                    Get My Free Quote
-                </button>
-                <p class="text-center text-sm text-gray-500 mt-4">
-                    We'll get back to you within 30 minutes during business
-                    hours.
+                    Access
                 </p>
-            </form>
+                <InkHeading
+                    level={1}
+                    class="text-5xl md:text-8xl uppercase mb-12"
+                    >The Gateway</InkHeading
+                >
+
+                <div class="space-y-16">
+                    <div>
+                        <h3
+                            class="text-xs uppercase tracking-[0.3em] text-ink-text mb-6"
+                        >
+                            Booking Process
+                        </h3>
+                        <p class="text-warm-grey leading-relaxed max-w-md">
+                            All project start with a complimentary consultation.
+                            This allows us to discuss your vision, placement,
+                            and size in detail before securing a date.
+                        </p>
+                    </div>
+
+                    <div>
+                        <h3
+                            class="text-xs uppercase tracking-[0.3em] text-ink-text mb-6"
+                        >
+                            Studio Info
+                        </h3>
+                        <div class="space-y-4 text-warm-grey">
+                            <p>Tuesday — Saturday</p>
+                            <p>11:00 AM — 06:00 PM</p>
+                            <p class="pt-4">123 Boutique Lane, Northbridge</p>
+                            <p>Perth, Western Australia</p>
+                        </div>
+                    </div>
+
+                    <div class="pt-8 flex space-x-8">
+                        <a
+                            href="#"
+                            class="text-[10px] tracking-widest uppercase text-metallic-accent hover:text-ink-text"
+                            >Instagram</a
+                        >
+                        <a
+                            href="#"
+                            class="text-[10px] tracking-widest uppercase text-metallic-accent hover:text-ink-text"
+                            >Email Atelier</a
+                        >
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-surface p-12 md:p-16 border border-divider">
+                <div class="mb-12">
+                    <h2 class="text-2xl font-heading mb-4">
+                        Request a Consultation
+                    </h2>
+                    <p class="text-sm text-warm-grey">
+                        Average response time: 2-3 business days.
+                    </p>
+                </div>
+                <BookingForm />
+            </div>
         </div>
-    </div>
-</BaseLayout>
+    </section>
+
+    <!-- Local Trust / SEO MAP placeholder -->
+    <section class="py-32 px-6 md:px-12 bg-charcoal border-t border-divider">
+        <div
+            class="max-w-[1280px] mx-auto flex flex-col items-center text-center"
+        >
+            <InkHeading class="text-3xl md:text-4xl uppercase mb-12"
+                >Serving the Perth Community</InkHeading
+            >
+            <p class="text-warm-grey max-w-2xl mb-12 leading-relaxed">
+                Located in the heart of Northbridge, we are proud to serve
+                collectors from Leederville, Mount Lawley, and across Western
+                Australia.
+            </p>
+            <div
+                class="w-full h-[400px] bg-surface grayscale opacity-50 border border-divider flex items-center justify-center"
+            >
+                <span
+                    class="text-[10px] tracking-widest uppercase text-warm-grey"
+                    >Atmospheric Map Visualization</span
+                >
+            </div>
+        </div>
+    </section>
+
+    <Footer slot="footer" />
+</MainLayout>

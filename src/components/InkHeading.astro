@@ -1,0 +1,47 @@
+---
+interface Props {
+    level?: 1 | 2 | 3 | 4 | 5 | 6;
+    class?: string;
+}
+
+const { level = 2, class: className = "" } = Astro.props;
+const Tag = `h${level}` as any;
+---
+
+<Tag class:list={["ink-heading relative overflow-hidden", className]}>
+    <span
+        class="inline-block translate-y-full transition-transform duration-[1200ms] cubic-bezier(0.2, 1, 0.3, 1)"
+    >
+        <slot />
+    </span>
+</Tag>
+
+<style>
+    .ink-heading.is-visible span {
+        transform: translateY(0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .ink-heading span {
+            transform: translateY(0);
+            transition: none;
+        }
+    }
+</style>
+
+<script>
+    const observer = new IntersectionObserver(
+        (entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("is-visible");
+                }
+            });
+        },
+        { threshold: 0.1 },
+    );
+
+    document
+        .querySelectorAll(".ink-heading")
+        .forEach((h) => observer.observe(h));
+</script>

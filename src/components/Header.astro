@@ -1,0 +1,230 @@
+---
+const base = import.meta.env.BASE_URL;
+
+const navItems = [
+    { name: "Artists", href: `${base}artists` },
+    { name: "Gallery", href: `${base}gallery` },
+    { name: "Styles", href: `${base}styles` },
+    { name: "Aftercare", href: `${base}aftercare` },
+    { name: "Contact", href: `${base}contact` },
+];
+---
+
+<header
+    class="py-12 px-6 md:px-12 w-full max-w-[1280px] mx-auto flex justify-between items-center z-50 relative"
+>
+    <a
+        href={base}
+        class="text-2xl font-heading tracking-widest text-ink-text hover:text-metallic-accent transition-colors duration-500 uppercase"
+    >
+        INK//RITUAL
+    </a>
+
+    <nav class="hidden md:block" aria-label="Primary">
+        <ul class="flex space-x-12">
+            {
+                navItems.map((item) => (
+                    <li>
+                        <a
+                            href={item.href}
+                            class="text-sm font-body uppercase tracking-[0.2em] text-warm-grey hover:text-ink-text transition-colors duration-500"
+                        >
+                            {item.name}
+                        </a>
+                    </li>
+                ))
+            }
+        </ul>
+    </nav>
+
+    <!-- Mobile Toggle (Simplified for design brief) -->
+    <button
+        class="md:hidden text-ink-text"
+        aria-label="Toggle menu"
+        aria-controls="mobile-menu"
+        aria-expanded="false"
+        id="menu-toggle"
+        type="button"
+    >
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+        >
+            <line x1="4" y1="12" x2="20" y2="12"></line>
+            <line x1="4" y1="6" x2="20" y2="6"></line>
+            <line x1="4" y1="18" x2="20" y2="18"></line>
+        </svg>
+    </button>
+</header>
+
+<div
+    id="mobile-menu"
+    class="md:hidden fixed inset-0 z-[90] pointer-events-none opacity-0 transition-opacity duration-300 data-[state=open]:pointer-events-auto data-[state=open]:opacity-100"
+    data-state="closed"
+    aria-hidden="true"
+    inert
+>
+    <button
+        type="button"
+        class="absolute inset-0 bg-charcoal/80 backdrop-blur-sm"
+        aria-label="Close menu"
+        data-mobile-menu-close
+    >
+    </button>
+
+    <div
+        class="absolute right-0 top-0 h-full w-[min(22rem,85vw)] bg-charcoal border-l border-divider px-8 pt-24 pb-12 translate-x-full transition-transform duration-300 data-[state=open]:translate-x-0"
+        data-mobile-menu-panel
+        data-state="closed"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Mobile menu"
+    >
+        <button
+            type="button"
+            class="absolute top-10 right-8 text-ink-text hover:text-metallic-accent transition-colors"
+            aria-label="Close menu"
+            data-mobile-menu-close
+        >
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+            >
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+
+        <nav aria-label="Mobile">
+            <ul class="space-y-10">
+                {
+                    navItems.map((item) => (
+                        <li>
+                            <a
+                                href={item.href}
+                                class="text-sm font-body uppercase tracking-[0.2em] text-warm-grey hover:text-ink-text transition-colors duration-500"
+                            >
+                                {item.name}
+                            </a>
+                        </li>
+                    ))
+                }
+            </ul>
+        </nav>
+    </div>
+</div>
+
+<script>
+    const MOBILE_MENU_STATE_ATTR = "data-state";
+    const MOBILE_MENU_OPEN = "open";
+    const MOBILE_MENU_CLOSED = "closed";
+
+    const getMobileMenuElements = () => {
+        const toggle = document.getElementById("menu-toggle");
+        const menu = document.getElementById("mobile-menu");
+
+        if (!(toggle instanceof HTMLButtonElement)) return null;
+        if (!(menu instanceof HTMLElement)) return null;
+
+        const panel = menu.querySelector("[data-mobile-menu-panel]");
+        if (!(panel instanceof HTMLElement)) return null;
+
+        return { toggle, menu, panel };
+    };
+
+    const isMenuOpen = (menu) => menu.getAttribute(MOBILE_MENU_STATE_ATTR) === MOBILE_MENU_OPEN;
+
+    const setMenuOpen = (open) => {
+        const elements = getMobileMenuElements();
+        if (!elements) return;
+
+        const { toggle, menu, panel } = elements;
+        const wasOpen = isMenuOpen(menu);
+        const nextState = open ? MOBILE_MENU_OPEN : MOBILE_MENU_CLOSED;
+
+        menu.setAttribute(MOBILE_MENU_STATE_ATTR, nextState);
+        panel.setAttribute(MOBILE_MENU_STATE_ATTR, nextState);
+        menu.setAttribute("aria-hidden", open ? "false" : "true");
+        toggle.setAttribute("aria-expanded", open ? "true" : "false");
+
+        document.documentElement.classList.toggle("overflow-hidden", open);
+        document.body.classList.toggle("overflow-hidden", open);
+
+        if (open) {
+            menu.removeAttribute("inert");
+            const firstLink = menu.querySelector("a");
+            if (firstLink instanceof HTMLAnchorElement) {
+                firstLink.focus();
+            }
+        } else {
+            menu.setAttribute("inert", "");
+            if (wasOpen) toggle.focus();
+        }
+    };
+
+    const setupMobileMenu = () => {
+        if (window.__inkRitualMobileMenuBound) return;
+        window.__inkRitualMobileMenuBound = true;
+
+        document.addEventListener("click", (event) => {
+            const target = event.target;
+            if (!(target instanceof Element)) return;
+
+            const elements = getMobileMenuElements();
+            if (!elements) return;
+
+            const { menu } = elements;
+
+            if (target.closest("#menu-toggle")) {
+                setMenuOpen(!isMenuOpen(menu));
+                return;
+            }
+
+            if (target.closest("[data-mobile-menu-close]")) {
+                setMenuOpen(false);
+                return;
+            }
+
+            if (target.closest("#mobile-menu a")) {
+                setMenuOpen(false);
+            }
+        });
+
+        document.addEventListener("keydown", (event) => {
+            if (event.key !== "Escape") return;
+            setMenuOpen(false);
+        });
+
+        const mediaQueryList = window.matchMedia("(min-width: 768px)");
+        const handleMediaChange = (event) => {
+            if (event.matches) setMenuOpen(false);
+        };
+
+        if (typeof mediaQueryList.addEventListener === "function") {
+            mediaQueryList.addEventListener("change", handleMediaChange);
+        } else if (typeof mediaQueryList.addListener === "function") {
+            mediaQueryList.addListener(handleMediaChange);
+        }
+
+        document.addEventListener("astro:before-swap", () => {
+            setMenuOpen(false);
+        });
+    };
+
+    setupMobileMenu();
+</script>
