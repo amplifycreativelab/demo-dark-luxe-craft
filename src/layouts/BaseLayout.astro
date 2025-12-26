@@ -147,13 +147,94 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
                     </div>
                 </nav>
 
-                <!-- Mobile Toggle Link -->
-                <a
-                    href={`${baseUrl}contact`}
-                    class="md:hidden bg-primary text-white px-4 py-2 rounded-md font-semibold text-sm shadow-sm"
+                <!-- Mobile Actions -->
+                <div class="md:hidden flex items-center gap-2">
+                    <a
+                        href={`${baseUrl}contact`}
+                        class="bg-primary text-white px-4 py-2 rounded-md font-semibold text-sm shadow-sm"
+                    >
+                        Get Quote
+                    </a>
+                    <button
+                        type="button"
+                        id="mobile-menu-button"
+                        class="inline-flex items-center justify-center rounded-md p-2 text-text-main hover:bg-gray-100 transition-colors"
+                        aria-label="Open menu"
+                        aria-controls="mobile-menu"
+                        aria-expanded="false"
+                    >
+                        <svg
+                            data-menu-icon="open"
+                            class="h-6 w-6"
+                            aria-hidden="true"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M4 6h16M4 12h16M4 18h16"
+                            />
+                        </svg>
+                        <svg
+                            data-menu-icon="close"
+                            class="h-6 w-6 hidden"
+                            aria-hidden="true"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M6 18L18 6M6 6l12 12"
+                            />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div
+                id="mobile-menu"
+                class="md:hidden hidden border-t border-gray-200 bg-white/95 backdrop-blur-md"
+            >
+                <nav
+                    class="container mx-auto px-4 py-4 flex flex-col gap-1"
+                    aria-label="Mobile"
                 >
-                    Get Quote
-                </a>
+                    <a
+                        href={`${baseUrl}services`}
+                        class="block rounded-lg px-3 py-3 font-medium hover:bg-gray-50 transition-colors"
+                        >Services</a
+                    >
+                    <a
+                        href={`${baseUrl}areas`}
+                        class="block rounded-lg px-3 py-3 font-medium hover:bg-gray-50 transition-colors"
+                        >Areas</a
+                    >
+                    <a
+                        href={`${baseUrl}about`}
+                        class="block rounded-lg px-3 py-3 font-medium hover:bg-gray-50 transition-colors"
+                        >About</a
+                    >
+                    <a
+                        href={`${baseUrl}contact`}
+                        class="block rounded-lg px-3 py-3 font-medium hover:bg-gray-50 transition-colors"
+                        >Contact</a
+                    >
+                    <div class="mt-2 pt-3 border-t border-gray-200">
+                        <a
+                            href={phoneHref}
+                            class="flex items-center gap-2 rounded-lg px-3 py-3 font-bold text-primary hover:bg-gray-50 transition-colors"
+                        >
+                            <span class="text-lg">dY"z</span> {phoneDisplay}
+                        </a>
+                    </div>
+                </nav>
             </div>
         </header>
 
@@ -310,5 +391,54 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
                 <span class="text-2xl">📞</span> Call Now {phoneDisplay}
             </a>
         </div>
+
+        <script is:inline>
+            (() => {
+                const button = document.getElementById("mobile-menu-button");
+                const menu = document.getElementById("mobile-menu");
+
+                if (!button || !menu) return;
+                if (button.dataset.bound === "true") return;
+
+                button.dataset.bound = "true";
+
+                const iconOpen = button.querySelector('[data-menu-icon="open"]');
+                const iconClose = button.querySelector('[data-menu-icon="close"]');
+
+                const setOpen = (open) => {
+                    button.setAttribute("aria-expanded", open ? "true" : "false");
+                    button.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+                    menu.classList.toggle("hidden", !open);
+                    iconOpen?.classList.toggle("hidden", open);
+                    iconClose?.classList.toggle("hidden", !open);
+                };
+
+                const isOpen = () => button.getAttribute("aria-expanded") === "true";
+
+                button.addEventListener("click", () => {
+                    setOpen(!isOpen());
+                });
+
+                menu.querySelectorAll("a[href]").forEach((link) => {
+                    link.addEventListener("click", () => setOpen(false));
+                });
+
+                document.addEventListener("keydown", (event) => {
+                    if (event.key === "Escape") setOpen(false);
+                });
+
+                document.addEventListener("click", (event) => {
+                    if (!isOpen()) return;
+
+                    const target = event.target;
+                    if (!(target instanceof Node)) return;
+                    if (button.contains(target) || menu.contains(target)) return;
+
+                    setOpen(false);
+                });
+
+                setOpen(false);
+            })();
+        </script>
     </body>
 </html>
