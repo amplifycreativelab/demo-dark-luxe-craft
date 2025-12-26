@@ -8,7 +8,7 @@ import sitemap from "@astrojs/sitemap";
 // https://astro.build/config
 export default defineConfig({
   site: "https://amplifycreativelab.github.io",
-  base: "/demo-local-trader/",
+  base: "/demo-dark-luxe-craft/",
 
   vite: {
     plugins: [tailwindcss()]
