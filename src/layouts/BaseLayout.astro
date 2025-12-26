@@ -393,45 +393,56 @@ const baseUrl = import.meta.env.BASE_URL.endsWith("/")
         </div>
 
         <script is:inline>
-            (() => {
-                const button = document.getElementById("mobile-menu-button");
-                const menu = document.getElementById("mobile-menu");
+            (function () {
+                var button = document.getElementById("mobile-menu-button");
+                var menu = document.getElementById("mobile-menu");
 
                 if (!button || !menu) return;
-                if (button.dataset.bound === "true") return;
+                if (button.getAttribute("data-bound") === "true") return;
+                button.setAttribute("data-bound", "true");
 
-                button.dataset.bound = "true";
+                var iconOpen = button.querySelector('[data-menu-icon="open"]');
+                var iconClose = button.querySelector('[data-menu-icon="close"]');
 
-                const iconOpen = button.querySelector('[data-menu-icon="open"]');
-                const iconClose = button.querySelector('[data-menu-icon="close"]');
-
-                const setOpen = (open) => {
+                function setOpen(open) {
                     button.setAttribute("aria-expanded", open ? "true" : "false");
                     button.setAttribute("aria-label", open ? "Close menu" : "Open menu");
-                    menu.classList.toggle("hidden", !open);
-                    iconOpen?.classList.toggle("hidden", open);
-                    iconClose?.classList.toggle("hidden", !open);
-                };
 
-                const isOpen = () => button.getAttribute("aria-expanded") === "true";
+                    if (open) {
+                        menu.classList.remove("hidden");
+                        if (iconOpen) iconOpen.classList.add("hidden");
+                        if (iconClose) iconClose.classList.remove("hidden");
+                    } else {
+                        menu.classList.add("hidden");
+                        if (iconOpen) iconOpen.classList.remove("hidden");
+                        if (iconClose) iconClose.classList.add("hidden");
+                    }
+                }
 
-                button.addEventListener("click", () => {
+                function isOpen() {
+                    return button.getAttribute("aria-expanded") === "true";
+                }
+
+                button.addEventListener("click", function () {
                     setOpen(!isOpen());
                 });
 
-                menu.querySelectorAll("a[href]").forEach((link) => {
-                    link.addEventListener("click", () => setOpen(false));
+                var links = menu.querySelectorAll("a[href]");
+                for (var i = 0; i < links.length; i++) {
+                    links[i].addEventListener("click", function () {
+                        setOpen(false);
+                    });
+                }
+
+                document.addEventListener("keydown", function (event) {
+                    if (event.key === "Escape" || event.keyCode === 27) setOpen(false);
                 });
 
-                document.addEventListener("keydown", (event) => {
-                    if (event.key === "Escape") setOpen(false);
-                });
-
-                document.addEventListener("click", (event) => {
+                document.addEventListener("click", function (event) {
                     if (!isOpen()) return;
 
-                    const target = event.target;
-                    if (!(target instanceof Node)) return;
+                    var target = event.target;
+                    if (!target) return;
                     if (button.contains(target) || menu.contains(target)) return;
 
                     setOpen(false);
